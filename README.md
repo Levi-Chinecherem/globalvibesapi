@@ -20,6 +20,7 @@ To get started with the GlobalVibes Blog API, follow these steps:
 3. **Run Migrations:**
 
    ```
+   python manage.py makemigrations
    python manage.py migrate
    ```
 4. **Create a Superuser (for Admin Access):**
