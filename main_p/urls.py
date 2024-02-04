@@ -3,6 +3,8 @@ from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.conf import settings
+from django.conf.urls.static import static
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -17,12 +19,21 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-urlpatterns = [
+urlpatterns = ([
     path('admin/', admin.site.urls),
     path('api/', include('blog.urls')),  # Include blog app URLs
     path('accounts/', include('allauth.urls')),
     path('accounts/social/', include('allauth.socialaccount.urls')),
     path('auth/', include('rest_framework_social_oauth2.urls', namespace='rest_framework_social_oauth2')),
+
+    # chat/communities
+    path('api/chat/', include('chat.urls')),
+    
+    # consultation
+    path('api/consultation/', include('consultation.urls')),
+
+    # ckeditor
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 
     # REST Framework Browsable API
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -32,3 +43,6 @@ urlpatterns = [
     # path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
+    + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+)

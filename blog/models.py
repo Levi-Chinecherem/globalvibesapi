@@ -5,6 +5,7 @@ from django.conf import settings  # Import settings module
 from django.utils import timezone
 from taggit.managers import TaggableManager
 from django.utils.text import slugify
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -20,7 +21,7 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True)
     cover_image = models.ImageField(upload_to='blog_covers/', null=True, blank=True)  # Add this field
-    content = models.TextField()
+    content = RichTextUploadingField()
     pub_date = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Use settings.AUTH_USER_MODEL
     categories = models.ManyToManyField(Category, related_name='blog_posts')

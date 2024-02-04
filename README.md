@@ -1,4 +1,3 @@
-
 # GlobalVibes Blog API Documentation
 
 Welcome to the GlobalVibes Blog API! This API powers the GlobalVibes Blog, offering a platform to explore diverse content on various topics. Below is an overview of the available endpoints and functionalities.
@@ -7,50 +6,69 @@ Welcome to the GlobalVibes Blog API! This API powers the GlobalVibes Blog, offer
 
 To get started with the GlobalVibes Blog API, follow these steps:
 
-1. **Clone the Repository:**
+1.**Clone the Repository:**
 
-   ```
+```bash
+
    git clone https://github.com/Levi-Chinecherem/globalvibesapi.git
-   ```
-2. **Install Dependencies:**
 
-   ```
+
+```
+
+2.**Install Dependencies:**
+
+```bash
+
    pip install -r requirements.txt
-   ```
-3. **Run Migrations:**
 
-   ```
+```
+
+3.**Run Migrations:**
+
+```bash
+
    python manage.py makemigrations
+
    python manage.py migrate
-   ```
-4. **Create a Superuser (for Admin Access):**
 
-   ```
+```
+
+4.**Create a Superuser (for Admin Access):**
+
+```bash
+
    python manage.py createsuperuser
-   ```
-5. **Run the Development Server:**
 
-   ```
+```
+
+5.**Run the Development Server:**
+
+```bash
+
    python manage.py runserver
-   ```
-6. **Explore the API:**
 
-   - Open the [Swagger Documentation](http://localhost:8000/swagger/) for a detailed API reference.
-   - Utilize the [Browsable API](http://localhost:8000/api-auth/login/) for interactive testing.
+```
+
+6.**Explore the API:**
+
+- Open the [Swagger Documentation](http://localhost:8000/swagger/) for a detailed API reference.
+- Utilize the [Browsable API](http://localhost:8000/api-auth/login/) for interactive testing.
 
 ## CKEditor Features
 
 The GlobalVibes Blog API integrates CKEditor for enhanced content creation. CKEditor provides a rich set of features for Markdown editing, allowing users to create and format content seamlessly. Some notable features include:
 
-- **Rich Text Editing:** CKEditor enables users to create content with a WYSIWYG (What You See Is What You Get) editor, making it easy to format text, add images, and more.
-- **Markdown Support:** The API supports Markdown syntax for content creation. Users can leverage Markdown features to structure and style their content efficiently.
-- **Image Uploads:** CKEditor facilitates the easy upload and insertion of images into blog posts. Users can enhance their content with visually appealing media.
-- **Custom Styling:** CKEditor provides a customizable toolbar, allowing users to apply various styling options to their content. This includes text formatting, alignment, and more.
-- **Responsive Design:** The editor ensures a responsive design, providing a consistent and user-friendly experience across devices.
+-**Rich Text Editing:** CKEditor enables users to create content with a WYSIWYG (What You See Is What You Get) editor, making it easy to format text, add images, and more.
+
+-**Markdown Support:** The API supports Markdown syntax for content creation. Users can leverage Markdown features to structure and style their content efficiently.
+
+-**Image Uploads:** CKEditor facilitates the easy upload and insertion of images into blog posts. Users can enhance their content with visually appealing media.
+
+-**Custom Styling:** CKEditor provides a customizable toolbar, allowing users to apply various styling options to their content. This includes text formatting, alignment, and more.
+
+-**Responsive Design:** The editor ensures a responsive design, providing a consistent and user-friendly experience across devices.
 
 Feel free to explore the CKEditor features while creating and editing blog content via the API.
-
-Great! I'll use the provided information to draft a documentation outline. Feel free to provide any additional details or instructions as needed.
 
 ---
 
@@ -79,6 +97,25 @@ Great! I'll use the provided information to draft a documentation outline. Feel 
    - [Password Reset Confirmation](#password-reset-confirmation)
    - [Social Logins](#social-logins)
    - [User Details](#user-details)
+6. [Chat](#chat)
+
+   - [Community List](#community-list)
+   - [Join Community](#join-community)
+   - [Send Message](#send-message)
+   - [Chat History](#chat-history)
+   - [Notifications](#notifications)
+   - [Mute Community](#mute-community)
+   - [Community Members](#community-members)
+7. [Consultation](#consultation)
+
+   - [List Consultations](#list-consultations)
+   - [Consultation Details](#consultation-details)
+   - [Notification for Consultations](#notification-for-consultations)
+8. [Moderators](#moderators)
+
+   - [Promote Users to Moderators](#promote-users-to-moderators)
+   - [Moderator Notifications](#moderator-notifications)
+   - [Moderator Chat](#moderator-chat)
 
 ## Categories
 
@@ -181,3 +218,141 @@ Great! I'll use the provided information to draft a documentation outline. Feel 
 - **HTTP Methods**: GET
 - **Description**: Get details of the current user.
 - **Authentication**: Required.
+
+## Chat
+
+### Community List
+
+-**Endpoint**: `/communities/`
+
+-**HTTP Methods**: GET
+
+-**Description**: Get a list of available communities.
+
+-**Authentication**: Not required.
+
+### Join Community
+
+-**Endpoint**: `/join/`
+
+-**HTTP Methods**: POST
+
+-**Description**: Join a community.
+
+-**Authentication**: Required.
+
+### Send Message
+
+-**Endpoint**: `/send-message/<int:community_id>/`
+
+-**HTTP Methods**: POST
+
+-**Description**: Send a message to a community.
+
+-**Authentication**: Required.
+
+### Chat History
+
+- **
+
+Endpoint**: `/chat-history/<int:community_id>/`
+
+-**HTTP Methods**: GET
+
+-**Description**: Get the chat history of a community.
+
+-**Authentication**: Required.
+
+### Notifications
+
+-**Endpoint**: `/notifications/`
+
+-**HTTP Methods**: GET
+
+-**Description**: Get notifications for new messages.
+
+-**Authentication**: Required.
+
+### Mute Community
+
+-**Endpoint**: `/mute-community/<int:community_id>/`
+
+-**HTTP Methods**: POST
+
+-**Description**: Mute or unmute notifications for a community.
+
+-**Authentication**: Required.
+
+### Community Members
+
+-**Endpoint**: `/community-members/`
+
+-**HTTP Methods**: GET
+
+-**Description**: Get a list of members in a community.
+
+-**Authentication**: Required.
+
+## Consultation
+
+### List Consultations
+
+-**Endpoint**: `/consultations/`
+
+-**HTTP Methods**: GET, POST
+
+-**Description**: Get a list of consultations or create a new consultation.
+
+-**Authentication**: Required.
+
+### Consultation Details
+
+-**Endpoint**: `/consultations/<int:pk>/`
+
+-**HTTP Methods**: GET
+
+-**Description**: Retrieve details of a specific consultation.
+
+-**Authentication**: Required.
+
+### Notification for Consultations
+
+-**Endpoint**: `/consultation-notifications/`
+
+-**HTTP Methods**: GET
+
+-**Description**: Get notifications for new consultation messages.
+
+-**Authentication**: Required.
+
+## Moderators
+
+### Promote Users to Moderators
+
+-**Endpoint**: `/promote-moderator/<int:user_id>/`
+
+-**HTTP Methods**: POST
+
+-**Description**: Promote a user to the moderator role.
+
+-**Authentication**: Required.
+
+### Moderator Notifications
+
+-**Endpoint**: `/moderator-notifications/`
+
+-**HTTP Methods**: GET
+
+-**Description**: Get notifications for new moderator actions.
+
+-**Authentication**: Required.
+
+### Moderator Chat
+
+-**Endpoint**: `/moderator-chat/`
+
+-**HTTP Methods**: POST
+
+-**Description**: Chat with the admin as a moderator.
+
+-**Authentication**: Required.

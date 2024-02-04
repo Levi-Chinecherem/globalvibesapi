@@ -32,6 +32,8 @@ class CustomUser(AbstractUser):
     address = models.TextField(blank=True, null=True)
     photo = models.ImageField(upload_to='user_photos/', blank=True, null=True)
 
+    is_moderator = models.BooleanField(default=False)
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
