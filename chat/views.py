@@ -6,6 +6,8 @@ from .serializers import CommunitySerializer, UserChatSerializer, NotificationSe
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 from accounts.models import CustomUser
 
@@ -20,6 +22,23 @@ class CommunityListView(generics.ListAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
     permission_classes = [permissions.AllowAny]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['name']  # Specify fields to filter
+    search_fields = ['name', 'description']  # Specify fields to search
+
+class UserCommunitiesListView(generics.ListAPIView):
+    """
+    View to list communities that a user belongs to.
+
+    Requires authentication. Users can see the communities they belong to.
+    """
+    serializer_class = CommunitySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Retrieve the user's community memberships
+        user_communities = CommunityMember.objects.filter(user=self.request.user)
+        return [membership.community for membership in user_communities]
 
 class CommunityJoinView(generics.CreateAPIView):
     """
@@ -35,16 +54,31 @@ class CommunityJoinView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 class CommunityMemberListView(generics.ListAPIView):
+    """
+    View to list members of a community.
+
+    Requires authentication. Users can see the members of a community.
+    """
     queryset = CommunityMember.objects.all()
     serializer_class = CommunityMemberSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 class CommunityMemberDetailsView(generics.RetrieveAPIView):
+    """
+    View to retrieve details of a community member.
+
+    Requires authentication. Users can see the details of a community member.
+    """
     queryset = CommunityMember.objects.all()
     serializer_class = CommunityMemberDetailsSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 class LeaveCommunityView(generics.DestroyAPIView):
+    """
+    View to allow a user to leave a community.
+
+    Requires authentication. Users can leave communities.
+    """
     queryset = CommunityMember.objects.all()
     serializer_class = CommunityMemberSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -107,6 +141,11 @@ class NotificationListView(generics.ListAPIView):
         return Notification.objects.filter(user=self.request.user)
 
 class MuteCommunityView(generics.UpdateAPIView):
+    """
+    View to mute/unmute community notifications for a user.
+
+    Requires authentication. Users can mute/unmute community notifications.
+    """
     serializer_class = CommunityMemberSerializer
     permission_classes = [permissions.IsAuthenticated]
 

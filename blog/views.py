@@ -4,6 +4,8 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .models import Category, BlogPost, Comment, Like, Favorite
 from .serializers import CategorySerializer, BlogPostSerializer, CommentSerializer, LikeSerializer, FavoriteSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 # Category views
 
@@ -19,10 +21,15 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 class BlogPostListCreateView(generics.ListCreateAPIView):
     """
     View for listing and creating blog posts.
+
+    Supports search and filtering.
     """
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['categories', 'tags']  # Specify fields to filter
+    search_fields = ['title', 'content', 'categories__name', 'tags__name']  # Specify fields to search
 
     def perform_create(self, serializer):
         # Automatically set the author of the blog post to the current user.
@@ -32,7 +39,7 @@ class BlogPostListCreateView(generics.ListCreateAPIView):
         # Handle file uploads for the cover image
         kwargs['context'] = self.get_serializer_context()
         return BlogPostSerializer(*args, **kwargs)
-    
+
 class BlogPostDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     View for retrieving, updating, and deleting a specific blog post.

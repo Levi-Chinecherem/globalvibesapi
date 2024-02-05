@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CustomUserRegistrationView, CustomUserLoginView, CustomUserLogoutView, \
+from .views import UserDetailsRegistrationView, CustomUserRegistrationView, CustomUserLoginView, CustomUserLogoutView, \
     CustomUserPasswordChangeView, CustomUserPasswordResetConfirmView, GoogleLogin, FacebookLogin, GitHubLogin, UserDetailsView
 
 urlpatterns = [
@@ -11,5 +11,6 @@ urlpatterns = [
     path('social/login/google/', GoogleLogin.as_view(), name='google_login'),
     path('social/login/facebook/', FacebookLogin.as_view(), name='facebook_login'),
     path('social/login/github/', GitHubLogin.as_view(), name='github_login'),
+    path('userdetails/register', UserDetailsRegistrationView.as_view(), name='userdetails-registration'),
     path('userdetails/', UserDetailsView.as_view(), name='user_details'),
 ]
