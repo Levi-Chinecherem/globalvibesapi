@@ -1,4 +1,5 @@
 
+from django.contrib import admin
 from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -20,6 +21,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = ([
+    path('secret/place/of/admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('accounts/social/', include('allauth.socialaccount.urls')),
     path('auth/', include('rest_framework_social_oauth2.urls', namespace='rest_framework_social_oauth2')),
