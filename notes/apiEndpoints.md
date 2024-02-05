@@ -1,6 +1,6 @@
 # GlobalVibes Blog API Endpoints
 
-## Base URL: `https://your-api-base-url.com`
+## Base URL: `https://globalvibes.onrender.com/`
 
 ## Authentication Endpoints
 
