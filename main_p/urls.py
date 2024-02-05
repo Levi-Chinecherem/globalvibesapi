@@ -1,4 +1,4 @@
-from django.contrib import admin
+
 from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -20,17 +20,17 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = ([
-    path('admin/', admin.site.urls),
-    path('api/', include('blog.urls')),  # Include blog app URLs
     path('accounts/', include('allauth.urls')),
     path('accounts/social/', include('allauth.socialaccount.urls')),
     path('auth/', include('rest_framework_social_oauth2.urls', namespace='rest_framework_social_oauth2')),
 
+    path('api/', include('blog.urls')),  # Include blog app URLs
     # chat/communities
     path('api/chat/', include('chat.urls')),
-    
     # consultation
     path('api/consultation/', include('consultation.urls')),
+    path('api/moderators/', include('moderators.urls')),
+    
 
     # ckeditor
     path('ckeditor/', include('ckeditor_uploader.urls')),
