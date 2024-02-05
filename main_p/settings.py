@@ -1,6 +1,9 @@
 
 from pathlib import Path
 import os
+import dj_database_url
+import cloudinary
+import cloudinary_storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,6 +38,8 @@ INSTALLED_APPS = [
     'chat',
     'consultation',
     'moderators',
+    'cloudinary_storage',
+    'cloudinary',
 
     'ckeditor',
     'ckeditor_uploader',
@@ -99,6 +104,9 @@ DATABASES = {
     }
 }
 
+database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"] = dj_database_url.parse(database_url)
+# DATABASES["default"] = dj_database_url.parse("postgres://cloud_image_user:BzvS9M0uQ8RxnRLGFwWp64U8VNatpXYp@dpg-cmrbsef109ks73fhc7gg-a.oregon-postgres.render.com/cloud_image_db")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -144,8 +152,14 @@ STATICFILES_DIRS = [
 ]
 
 # Define the root directory for media files.
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/globalvibes_image_media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'ddirw9v0d',
+    'API_KEY': '736136276635934',
+    'API_SECRET': '8ePybnqjE4xP9HlGMhT_jyUiiTI'
+}
 
 CKEDITOR_BASEPATH = "/static/root/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = 'uploads/'  
