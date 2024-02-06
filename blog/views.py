@@ -20,6 +20,7 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 
 # BlogPost views
 
+
 class BlogPostListCreateView(generics.ListCreateAPIView):
     """
     View for listing and creating blog posts.
@@ -30,8 +31,18 @@ class BlogPostListCreateView(generics.ListCreateAPIView):
     serializer_class = BlogPostSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_class = BlogPostFilterSet  # Use your custom filter set
     search_fields = ['title', 'content', 'categories__name', 'tags__name']  # Specify fields to search
+
+    def get_queryset(self):
+        queryset = BlogPost.objects.all()
+        tags_param = self.request.query_params.get('tags', None)
+
+        if tags_param:
+            tags = tags_param.split(',')
+            queryset = queryset.filter(tags__name__in=tags).distinct()
+
+        # Add other filters as needed
+        return queryset
 
     def perform_create(self, serializer):
         # Automatically set the author of the blog post to the current user.
@@ -41,6 +52,7 @@ class BlogPostListCreateView(generics.ListCreateAPIView):
         # Handle file uploads for the cover image
         kwargs['context'] = self.get_serializer_context()
         return BlogPostSerializer(*args, **kwargs)
+
 
 class BlogPostDetailView(generics.RetrieveUpdateDestroyAPIView):
     """

@@ -3,7 +3,6 @@
 from django.db import models
 from django.conf import settings  # Import settings module
 from django.utils import timezone
-from taggit.managers import TaggableManager
 from django.utils.text import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -17,6 +16,16 @@ class Category(models.Model):
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True)
@@ -25,7 +34,7 @@ class BlogPost(models.Model):
     pub_date = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Use settings.AUTH_USER_MODEL
     categories = models.ManyToManyField(Category, related_name='blog_posts')
-    tags = TaggableManager()
+    tags = models.ManyToManyField(Tag, related_name='blog_post_tags')
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_posts', blank=True)  # Use settings.AUTH_USER_MODEL
     favorites = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='favorite_posts', blank=True)  # Use settings.AUTH_USER_MODEL
 
