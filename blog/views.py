@@ -1,12 +1,17 @@
-# views.py
+# blog/views.py
 
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
-from .models import Category, BlogPost, Comment, Like, Favorite
-from .serializers import CategorySerializer, BlogPostSerializer, CommentSerializer, LikeSerializer, FavoriteSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
-from django_filters import rest_framework as filters
+from .models import Category, BlogPost, Comment, Like, Favorite
+from .serializers import (
+    CategorySerializer,
+    BlogPostSerializer,
+    CommentSerializer,
+    LikeSerializer,
+    FavoriteSerializer,
+)
+
 
 # Category views
 
@@ -19,7 +24,6 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 
 # BlogPost views
 
-
 class BlogPostListCreateView(generics.ListCreateAPIView):
     """
     View for listing and creating blog posts.
@@ -29,8 +33,10 @@ class BlogPostListCreateView(generics.ListCreateAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, filters.CharFilter]
-    search_fields = ['title', 'content', 'categories__name', 'tags__name']  # Specify fields to search
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['categories__name', 'tags__name']  # Specify fields to filter
+
+    search_fields = ['title', 'content']  # Specify fields to search
 
     def get_queryset(self):
         queryset = BlogPost.objects.all()
