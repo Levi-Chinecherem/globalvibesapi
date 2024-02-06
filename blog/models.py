@@ -1,7 +1,7 @@
 # blog/models.py
 
 from django.db import models
-from django.conf import settings  # Import settings module
+from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -29,14 +29,14 @@ class Tag(models.Model):
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True)
-    cover_image = models.ImageField(upload_to='blog_covers/', null=True, blank=True)  # Add this field
+    cover_image = models.ImageField(upload_to='blog_covers/', null=True, blank=True)
     content = RichTextUploadingField()
     pub_date = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Use settings.AUTH_USER_MODEL
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Category, related_name='blog_posts')
-    tags = models.ManyToManyField(Tag, related_name='blog_post_tags')
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_posts', blank=True)  # Use settings.AUTH_USER_MODEL
-    favorites = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='favorite_posts', blank=True)  # Use settings.AUTH_USER_MODEL
+    tags = models.ManyToManyField(Tag, related_name='blog_posts')  # Updated related_name
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_posts', blank=True)
+    favorites = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='favorite_posts', blank=True)
 
     def __str__(self):
         return self.title
@@ -51,7 +51,7 @@ class BlogPost(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Use settings.AUTH_USER_MODEL
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
     pub_date = models.DateTimeField(default=timezone.now)
 
@@ -63,7 +63,7 @@ class Comment(models.Model):
         
 class Like(models.Model):
     post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='post_likes')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Use settings.AUTH_USER_MODEL
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user.username} likes {self.post.title}"
@@ -73,7 +73,7 @@ class Like(models.Model):
 
 class Favorite(models.Model):
     post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='post_favorites')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Use settings.AUTH_USER_MODEL
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user.username} favorites {self.post.title}"

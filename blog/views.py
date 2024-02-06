@@ -7,7 +7,6 @@ from .serializers import CategorySerializer, BlogPostSerializer, CommentSerializ
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from django_filters import rest_framework as filters
-from .filters import BlogPostFilterSet  # Assuming you saved your filter set in a filters.py file
 
 # Category views
 
@@ -30,7 +29,7 @@ class BlogPostListCreateView(generics.ListCreateAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.CharFilter]
     search_fields = ['title', 'content', 'categories__name', 'tags__name']  # Specify fields to search
 
     def get_queryset(self):
