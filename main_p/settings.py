@@ -102,9 +102,9 @@ DATABASES = {
     }
 }
 
-database_url = os.environ.get("DATABASE_URL")
-DATABASES["default"] = dj_database_url.parse(database_url)
-# DATABASES["default"] = dj_database_url.parse("postgres://globalvibes_user:2xCFYf9QMg1SrqxQSr0lC9NtJoL8h5FW@dpg-cn0dpm6v3ddc73c18lc0-a.oregon-postgres.render.com/global_vibes_db")
+# database_url = os.environ.get("DATABASE_URL")
+# DATABASES["default"] = dj_database_url.parse(database_url)
+DATABASES["default"] = dj_database_url.parse("postgres://globalvibes_user:jOszxLjYQm0qgI21GaL7cFXB6KbNZwfd@dpg-cn17vked3nmc738lb02g-a.oregon-postgres.render.com/global_vibes_db_22bn")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
